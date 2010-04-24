@@ -1,0 +1,200 @@
+<!DOCTYPE plugin SYSTEM "../../libs/devblocks/plugin.dtd">
+<plugin>
+	<id>cerberusweb.macros</id>
+	<name>[Cerb5] Macros (Experimental)</name>
+	<description>Create reusable actions based on search criteria</description>
+	<author>Scott Luther</author>
+	<revision>0</revision>
+	<link>http://www.cerberusweb.com/</link>
+	
+	<!-- Exported Classes -->
+	
+	<class_loader>
+		<file path="api/App.php">
+			<class name="DAO_Macro" />
+			<class name="Model_Macro" />
+		</file>
+	</class_loader>
+
+	<!-- Permissions -->
+	
+	
+	<extensions>
+	    <!-- Page Extensions -->
+        <extension point="cerberusweb.page">
+			<id>core.page.macros</id>
+			<name>Macros Page</name>
+			<class>
+				<file>api/App.php</file>
+				<name>ChMacrosPage</name>
+			</class>
+			<params>
+				<param key="uri" value="macros" />
+				<param key="menutitle" value="" />
+			</params>
+		</extension>
+        
+        <!-- Config Tab -->
+        <extension point="cerberusweb.config.tab">
+    		<id>macros.config.tab</id>
+    		<name>Macros Config Tab</name>
+    		<class>
+    			<file>api/App.php</file>
+    			<name>ChMacrosConfigTab</name>
+    		</class>
+    		<params>
+    			<param key="uri" value="macros" />
+    			<param key="title" value="Macros" />
+    		</params>
+    	</extension>
+        
+	    <!-- Group Tab -->
+        <extension point="cerberusweb.groups.tab">
+            <id>core.groups.macros</id>
+			<name>Macros Preferences</name>
+			<class>
+				<file>api/App.php</file>
+				<name>ChMacrosGroupTab</name>
+			</class>
+			<params>
+				<param key="uri" value="macros" />
+				<param key="title" value="Macros" />
+			</params>
+        </extension>
+        
+        <!-- Source Extensions -->
+        <extension point="cerberusweb.macros.source">
+            <id>cerberusweb.macros.ticket</id>
+    		<name>Tickets</name>
+    		<class>
+    			<file>api/App.php</file>
+    			<name>ChMacroSource_Ticket</name>
+    		</class>
+    	</extension>
+        <extension point="cerberusweb.macros.source">
+            <id>cerberusweb.macros.address</id>
+    		<name>Addresses</name>
+    		<class>
+    			<file>api/App.php</file>
+    			<name>ChMacroSource_Address</name>
+    		</class>
+    	</extension>
+        <extension point="cerberusweb.macros.source">
+            <id>cerberusweb.macros.opportunity</id>
+    		<name>Opportunities</name>
+    		<class>
+    			<file>api/App.php</file>
+    			<name>ChMacroSource_Opportunity</name>
+    		</class>
+    	</extension>
+        <extension point="cerberusweb.macros.source">
+            <id>cerberusweb.macros.task</id>
+    		<name>Tasks</name>
+    		<class>
+    			<file>api/App.php</file>
+    			<name>ChMacroSource_Task</name>
+    		</class>
+    	</extension>
+        
+        <!-- Action Extensions -->
+        <extension point="cerberusweb.macros.action">
+			<id>cerberusweb.macros.action.status</id>
+			<name>Status</name>
+			<class>
+				<file>api/App.php</file>
+				<name>ChMacrosActionAction_Status</name>
+			</class>
+			<params>
+				<!-- Available to Sources -->
+				<param key="sources">
+					<value>
+						<data key="cerberusweb.macros.ticket" />						
+						<data key="cerberusweb.macros.opportunity" />	
+					</value>
+				</param>
+			</params>
+		</extension>
+        <extension point="cerberusweb.macros.action">
+			<id>cerberusweb.macros.action.move</id>
+			<name>Move</name>
+			<class>
+				<file>api/App.php</file>
+				<name>ChMacrosActionAction_Move</name>
+			</class>
+			<params>
+				<!-- Available to Sources -->
+				<param key="sources">
+					<value>
+						<data key="cerberusweb.macros.ticket" />	
+					</value>
+				</param>
+			</params>
+		</extension>
+        <extension point="cerberusweb.macros.action">
+			<id>cerberusweb.macros.action.assign</id>
+			<name>Assign</name>
+			<class>
+				<file>api/App.php</file>
+				<name>ChMacrosActionAction_Assign</name>
+			</class>
+			<params>
+				<!-- Available to Sources -->
+				<param key="sources">
+					<value>
+						<data key="cerberusweb.macros.ticket" />
+                        <data key="cerberusweb.macros.task" />
+                        <data key="cerberusweb.macros.opportunity" />	
+					</value>
+				</param>
+			</params>
+		</extension>
+        <!-- Event Listeners -->
+		
+		<extension point="devblocks.listener.event">
+			<id>macros.listener.core</id>
+			<name>Macros Listener</name>
+			<class>
+				<file>api/App.php</file>
+				<name>ChMacrosEventListener</name>
+			</class>
+			<params>
+				<!-- Event Listener -->
+				<param key="events">
+					<value>
+						<data key="cron.heartbeat" />
+					</value>
+				</param>
+			</params>
+		</extension>
+        
+        <!-- Patch Containers -->
+		
+		<extension point="devblocks.patch.container">
+			<id>cerberusweb.macros.patches</id>
+			<name>Macros Patches</name>
+			<class>
+				<file>api/Patch.php</file>
+				<name>ChMacrosPatchContainer</name>
+			</class>
+			<params>
+			</params>
+		</extension>
+
+		<!-- Translations -->
+		
+		<extension point="devblocks.i18n.strings">
+			<id>cerberusweb.macros.translations</id>
+			<name>Macros Strings</name>
+			<class>
+				<file>api/Plugin.php</file>
+				<name>ChMacrosTranslations</name>
+			</class>
+			<params>
+			</params>
+		</extension>
+	</extensions>
+    
+    
+    
+    
+</plugin>
